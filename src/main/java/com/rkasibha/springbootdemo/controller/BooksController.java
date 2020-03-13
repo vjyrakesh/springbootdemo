@@ -1,4 +1,4 @@
-package com.rkasibha.springbootdemo;
+package com.rkasibha.springbootdemo.controller;
 
 import com.rkasibha.springbootdemo.dto.AddressDto;
 import com.rkasibha.springbootdemo.dto.AuthorDto;
