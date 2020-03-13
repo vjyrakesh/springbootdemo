@@ -5,6 +5,8 @@ public class AddressDto {
     private String city;
     private String country;
 
+    public AddressDto(){}
+
     public String getCity() {
         return city;
     }

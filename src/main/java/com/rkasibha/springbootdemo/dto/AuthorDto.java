@@ -6,6 +6,8 @@ public class AuthorDto {
     private String lastName;
     private AddressDto address;
 
+    public AuthorDto() {}
+
     public AddressDto getAddress() {
         return address;
     }

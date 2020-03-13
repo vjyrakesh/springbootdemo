@@ -5,6 +5,8 @@ public class BookDto {
     private String name;
     private AuthorDto author;
 
+    public BookDto() {}
+
     public BookDto(String name, AuthorDto author) {
         this.name = name;
         this.author = author;
