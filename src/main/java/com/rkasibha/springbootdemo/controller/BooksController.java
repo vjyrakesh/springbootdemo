@@ -52,11 +52,6 @@ public class BooksController {
         }
     }
 
-    @RequestMapping(value = "hello", method = RequestMethod.GET)
-    public String sayHello(@RequestParam(value = "name") String name) {
-        return "Hello " + name;
-    }
-
     @RequestMapping(value = "/author", method = RequestMethod.GET)
     public ResponseEntity<AuthorDto> getAuthorDetails() {
         Address address = new Address("Bangalore", "India");
@@ -78,10 +73,14 @@ public class BooksController {
     }
 
     private Book convertBookDtoToEntity(BookDto bookDto) {
+        // You could either create the entity object manually by extracting the fields from the DTO object
+        // and populating each field again into the entity object.
         Book newBook = new Book(1, bookDto.getName(),
                 new Author(bookDto.getAuthor().getFirstName(), bookDto.getAuthor().getLastName(),
                         new Address(bookDto.getAuthor().getAddress().getCity(),
                                 bookDto.getAuthor().getAddress().getCountry())));
+
+        // Or use a ModelMapper to map the DTO object into the entity class
         Book mappedBook = mapper.map(bookDto, Book.class);
         return mappedBook;
     }
