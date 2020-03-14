@@ -64,3 +64,4 @@ as a method argument. This exception object contains list of errors which have f
 - Use `@ResponseStatus(HttpStatus.BAD_REQUEST` annotation on the exception handler method.
 - Return a `HashMap<String,String` containing the field names and the error messages.
 - List of available constraints is defined in `javax.validation.constraints` package.
+- You can also create a custom validation by creating an annotation.

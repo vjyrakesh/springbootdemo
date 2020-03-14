@@ -1,11 +1,15 @@
 package com.rkasibha.springbootdemo.dto;
 
+import com.rkasibha.springbootdemo.annotation.CustomNameConstraint;
+
 import javax.validation.constraints.NotBlank;
 
 public class AuthorDto {
 
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
+
+    @CustomNameConstraint
     private String lastName;
     private AddressDto address;
 
