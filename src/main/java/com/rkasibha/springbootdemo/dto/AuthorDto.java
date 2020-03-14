@@ -1,7 +1,10 @@
 package com.rkasibha.springbootdemo.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class AuthorDto {
 
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
     private String lastName;
     private AddressDto address;

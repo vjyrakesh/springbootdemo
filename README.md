@@ -10,7 +10,7 @@ Following are the concepts I would like to learn and apply:
 - Entity to DTO and vice-versa using ModelMapper class.
 - Understand exception handling and return appropriate error codes.
 - Validation of incoming data - TBD.
-- Logging - TBD.
+- Logging.
 - Providing custom configuration using @Configuration class.
 - Modifying application.properties
 - Use spring-data, JPA and Hibernate - TBD.
@@ -49,3 +49,18 @@ controller layer and a proper HTTP status code along with reason should be sent 
     - All exception handlers provided by Spring implement the interface `HandlerExceptionResolver`. Example implementations
     include `DefaultHandlerExceptionResolver`, `SimpleHandlerExceptionResolver`, etc. 
     Reference [here](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/HandlerExceptionResolver.html)
+    
+#### Logging
+- Use slf4j interfaces to create loggers in the application and log the messages.
+- Logback is the default implementation provided by the Springboot framework which could be used with minimal 
+configuration changes.
+- Create a config file - logback.xml if necessary to change the config.
+
+#### Validation
+- Use `@Valid` on the method parameter in the controller function.
+- You can use `@Valid` annotation on the nested DTO reference of a DTO to validate the nested object fields.
+- Create an exception handler method with `@ExceptionHandler` annotation that takes `MethodArgumentNotValid` exception
+as a method argument. This exception object contains list of errors which have field name and the error message.
+- Use `@ResponseStatus(HttpStatus.BAD_REQUEST` annotation on the exception handler method.
+- Return a `HashMap<String,String` containing the field names and the error messages.
+- List of available constraints is defined in `javax.validation.constraints` package.

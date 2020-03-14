@@ -1,8 +1,14 @@
 package com.rkasibha.springbootdemo.dto;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 public class BookDto {
 
+    @NotBlank(message="Book name is mandatory")
     private String name;
+
+    @Valid
     private AuthorDto author;
 
     public BookDto() {}
