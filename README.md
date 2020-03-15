@@ -9,7 +9,7 @@ Following are the concepts I would like to learn and apply:
 - Add entity/model classes.
 - Entity to DTO and vice-versa using ModelMapper class.
 - Understand exception handling and return appropriate error codes.
-- Validation of incoming data - TBD.
+- Validation of incoming data.
 - Logging.
 - Providing custom configuration using @Configuration class.
 - Modifying application.properties
@@ -65,3 +65,7 @@ as a method argument. This exception object contains list of errors which have f
 - Return a `HashMap<String,String` containing the field names and the error messages.
 - List of available constraints is defined in `javax.validation.constraints` package.
 - You can also create a custom validation by creating an annotation.
+
+#### AOP
+- Use AOP for cross cutting concerns e.g. execution time.
+- Create an annotation to control which methods are intercepted by the aspect.

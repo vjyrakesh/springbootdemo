@@ -1,5 +1,6 @@
 package com.rkasibha.springbootdemo.service;
 
+import com.rkasibha.springbootdemo.annotation.MeasureExecutionTime;
 import com.rkasibha.springbootdemo.model.Book;
 import com.rkasibha.springbootdemo.exception.BookNotFoundException;
 import com.rkasibha.springbootdemo.repository.BookRepository;
@@ -14,6 +15,7 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    @MeasureExecutionTime
     public Collection<Book> getAllBooks() {
         return bookRepository.getAllBooks();
 
