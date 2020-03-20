@@ -1,8 +1,6 @@
 package com.rkasibha.springbootdemo.controller;
 
-import com.rkasibha.springbootdemo.dto.AddressDto;
-import com.rkasibha.springbootdemo.dto.AuthorDto;
-import com.rkasibha.springbootdemo.dto.BookDto;
+import com.rkasibha.springbootdemo.dto.*;
 import com.rkasibha.springbootdemo.exception.BookNotFoundException;
 import com.rkasibha.springbootdemo.model.*;
 import com.rkasibha.springbootdemo.repository.ReviewRepository;
@@ -18,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "api/v1/books")
@@ -83,6 +78,47 @@ public class BooksController {
         return new ResponseEntity<AuthorDto>(authorDto1, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value="/reviews", method = RequestMethod.POST)
+    public ResponseEntity<ReviewDto> addReview(@RequestBody ReviewDto reviewDto) {
+        Review review = convertReviewDtoToReview(reviewDto);
+        Review addedReview = reviewRepository.save(review);
+        return new ResponseEntity<ReviewDto>(mapper.map(addedReview, ReviewDto.class), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/reviews", method = RequestMethod.GET)
+    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+        List<ReviewDto> reviewDtos = new ArrayList<>();
+        List<Review> reviews = reviewService.fetchAllReviews();
+        for(Review review: reviews) {
+            reviewDtos.add(mapper.map(review, ReviewDto.class));
+        }
+        return new ResponseEntity<List<ReviewDto>>(reviewDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
+    public ResponseEntity<ReviewDto> getOneReview(@PathVariable Integer id) {
+        return new ResponseEntity<>(mapper.map(reviewService.fetchOneReview(id), ReviewDto.class), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.POST)
+    public ResponseEntity<ReviewCommentDto> addReviewComment(@PathVariable Integer id,
+                                                          @RequestBody ReviewCommentDto reviewCommentDto) {
+        ReviewComment addedComment =
+                reviewService.addReviewComment(id, convertReviewCommentDtoToEntity(reviewCommentDto));
+        ReviewCommentDto addedCommentDto = mapper.map(addedComment, ReviewCommentDto.class);
+        return new ResponseEntity<>(addedCommentDto, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.GET)
+    public ResponseEntity<List<ReviewCommentDto>> fetchReviewComments(@PathVariable Integer id) {
+        List<ReviewComment> reviewComments = reviewService.fetchCommentsForReview(id);
+        List<ReviewCommentDto> reviewCommentDtos = new ArrayList<>();
+        for(ReviewComment reviewComment : reviewComments) {
+            reviewCommentDtos.add(mapper.map(reviewComment, ReviewCommentDto.class));
+        }
+        return new ResponseEntity<>(reviewCommentDtos, HttpStatus.OK);
+    }
+
     private Book convertBookDtoToEntity(BookDto bookDto) {
         // You could either create the entity object manually by extracting the fields from the DTO object
         // and populating each field again into the entity object.
@@ -96,31 +132,13 @@ public class BooksController {
         return mappedBook;
     }
 
-    @RequestMapping(value="/reviews", method = RequestMethod.POST)
-    public ResponseEntity<Review> addReview(@RequestBody Review review) {
-        Review addedReview = reviewRepository.save(review);
-        return new ResponseEntity<Review>(addedReview, HttpStatus.CREATED);
+    private ReviewComment convertReviewCommentDtoToEntity(ReviewCommentDto reviewCommentDto) {
+        ReviewComment reviewComment = mapper.map(reviewCommentDto, ReviewComment.class);
+        return reviewComment;
     }
 
-    @RequestMapping(value = "/reviews", method = RequestMethod.GET)
-    public ResponseEntity<List<Review>> getAllReviews() {
-        return new ResponseEntity<>(reviewService.fetchAllReviews(), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Review> getOneReview(@PathVariable Integer id) {
-        return new ResponseEntity<>(reviewService.fetchOneReview(id), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.POST)
-    public ResponseEntity<ReviewComment> addReviewComment(@PathVariable Integer id,
-                                                          @RequestBody ReviewComment reviewComment) {
-        return new ResponseEntity<>(reviewService.addReviewComment(id, reviewComment), HttpStatus.CREATED);
-    }
-
-    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.GET)
-    public ResponseEntity<List<ReviewComment>> fetchReviewComments(@PathVariable Integer id) {
-        return new ResponseEntity<>(reviewService.fetchCommentsForReview(id), HttpStatus.OK);
+    private Review convertReviewDtoToReview(ReviewDto reviewDto) {
+        return mapper.map(reviewDto, Review.class);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
