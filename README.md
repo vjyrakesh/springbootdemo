@@ -14,8 +14,8 @@ Following are the concepts I would like to learn and apply:
 - Providing custom configuration using @Configuration class.
 - Modifying application.properties
 - Use spring-data, JPA and Hibernate - TBD.
-- Use actuator starter POM - TBD.
-- Aspects to monitor performance - TBD.
+- Use actuator starter POM.
+- Aspects to monitor performance.
 - API documentation - TBD.
 - Unit testing - TBD.
 - Spring integration testing - TBD.
@@ -69,3 +69,6 @@ as a method argument. This exception object contains list of errors which have f
 #### AOP
 - Use AOP for cross cutting concerns e.g. execution time.
 - Create an annotation to control which methods are intercepted by the aspect.
+
+#### Misc
+- To access headers in the controller: https://www.baeldung.com/spring-rest-http-headers

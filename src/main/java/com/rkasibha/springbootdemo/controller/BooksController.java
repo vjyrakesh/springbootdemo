@@ -4,10 +4,10 @@ import com.rkasibha.springbootdemo.dto.AddressDto;
 import com.rkasibha.springbootdemo.dto.AuthorDto;
 import com.rkasibha.springbootdemo.dto.BookDto;
 import com.rkasibha.springbootdemo.exception.BookNotFoundException;
-import com.rkasibha.springbootdemo.model.Address;
-import com.rkasibha.springbootdemo.model.Author;
-import com.rkasibha.springbootdemo.model.Book;
+import com.rkasibha.springbootdemo.model.*;
+import com.rkasibha.springbootdemo.repository.ReviewRepository;
 import com.rkasibha.springbootdemo.service.BookService;
+import com.rkasibha.springbootdemo.service.ReviewService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +32,12 @@ public class BooksController {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<Collection<Book>> getBooks() {
@@ -87,6 +94,33 @@ public class BooksController {
         // Or use a ModelMapper to map the DTO object into the entity class
         Book mappedBook = mapper.map(bookDto, Book.class);
         return mappedBook;
+    }
+
+    @RequestMapping(value="/reviews", method = RequestMethod.POST)
+    public ResponseEntity<Review> addReview(@RequestBody Review review) {
+        Review addedReview = reviewRepository.save(review);
+        return new ResponseEntity<Review>(addedReview, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/reviews", method = RequestMethod.GET)
+    public ResponseEntity<List<Review>> getAllReviews() {
+        return new ResponseEntity<>(reviewService.fetchAllReviews(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reviews/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Review> getOneReview(@PathVariable Integer id) {
+        return new ResponseEntity<>(reviewService.fetchOneReview(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.POST)
+    public ResponseEntity<ReviewComment> addReviewComment(@PathVariable Integer id,
+                                                          @RequestBody ReviewComment reviewComment) {
+        return new ResponseEntity<>(reviewService.addReviewComment(id, reviewComment), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/reviews/{id}/comments", method = RequestMethod.GET)
+    public ResponseEntity<List<ReviewComment>> fetchReviewComments(@PathVariable Integer id) {
+        return new ResponseEntity<>(reviewService.fetchCommentsForReview(id), HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
