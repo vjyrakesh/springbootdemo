@@ -35,8 +35,12 @@ public class BooksController {
     private ReviewService reviewService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<Collection<Book>> getBooks() {
-        return new ResponseEntity<Collection<Book>>(bookService.getAllBooks(), HttpStatus.OK);
+    public ResponseEntity<List<BookDto>> getBooks() {
+        List<Book> books = bookService.getAllBooks();
+        List<BookDto> bookDtos = new ArrayList<>();
+        for(Book book : books)
+            bookDtos.add(mapper.map(book, BookDto.class));
+        return new ResponseEntity<List<BookDto>>(bookDtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -47,15 +51,30 @@ public class BooksController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<BookDto> getOneBook(@PathVariable long id) {
+    public ResponseEntity<BookDto> getOneBook(@PathVariable Integer id) {
         try {
             Book book = bookService.getOneBook(id);
-            ModelMapper mapper = new ModelMapper();
             BookDto bookDto = mapper.map(book, BookDto.class);
             return new ResponseEntity<BookDto>(bookDto, HttpStatus.OK);
         } catch (BookNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Book with id:%d not found", id), ex);
         }
+    }
+
+    @RequestMapping(value = "/{id}/reviews", method = RequestMethod.POST)
+    public ResponseEntity<ReviewDto> addBookReview(@PathVariable Integer id, @RequestBody ReviewDto reviewDto) {
+        Review review = mapper.map(reviewDto, Review.class);
+        ReviewDto addedReviewDto = mapper.map(reviewService.addBookReview(id, review), ReviewDto.class);
+        return new ResponseEntity<>(addedReviewDto, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{id}/reviews", method = RequestMethod.GET)
+    public ResponseEntity<List<ReviewDto>> getBookReviews(@PathVariable Integer id) {
+        List<Review> reviews = bookService.getAllReviews(id);
+        List<ReviewDto> reviewDtos = new ArrayList<>();
+        for(Review review : reviews)
+            reviewDtos.add(mapper.map(review, ReviewDto.class));
+        return new ResponseEntity<>(reviewDtos, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/author", method = RequestMethod.GET)
@@ -119,14 +138,11 @@ public class BooksController {
         return new ResponseEntity<>(reviewCommentDtos, HttpStatus.OK);
     }
 
+
+
     private Book convertBookDtoToEntity(BookDto bookDto) {
         // You could either create the entity object manually by extracting the fields from the DTO object
         // and populating each field again into the entity object.
-        Book newBook = new Book(1, bookDto.getName(),
-                new Author(bookDto.getAuthor().getFirstName(), bookDto.getAuthor().getLastName(),
-                        new Address(bookDto.getAuthor().getAddress().getCity(),
-                                bookDto.getAuthor().getAddress().getCountry())));
-
         // Or use a ModelMapper to map the DTO object into the entity class
         Book mappedBook = mapper.map(bookDto, Book.class);
         return mappedBook;

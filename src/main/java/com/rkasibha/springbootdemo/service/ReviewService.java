@@ -1,7 +1,9 @@
 package com.rkasibha.springbootdemo.service;
 
+import com.rkasibha.springbootdemo.model.Book;
 import com.rkasibha.springbootdemo.model.Review;
 import com.rkasibha.springbootdemo.model.ReviewComment;
+import com.rkasibha.springbootdemo.repository.BookRepository;
 import com.rkasibha.springbootdemo.repository.ReviewCommentRepository;
 import com.rkasibha.springbootdemo.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private ReviewCommentRepository reviewCommentRepository;
@@ -40,4 +45,12 @@ public class ReviewService {
         reviewComment.setReview(review);
         return reviewCommentRepository.save(reviewComment);
     }
+
+    public Review addBookReview(Integer bookId, Review review) {
+        Book book = bookRepository.findById(bookId).get();
+        review.setBook(book);
+        return reviewRepository.save(review);
+    }
+
+
 }

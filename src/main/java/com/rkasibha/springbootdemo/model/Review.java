@@ -17,6 +17,9 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<ReviewComment> reviewComments;
 
+    @ManyToOne
+    private Book book;
+
     public Review() {}
 
     public Integer getId() {
@@ -41,5 +44,13 @@ public class Review {
 
     public void setReviewComments(List<ReviewComment> reviewComments) {
         this.reviewComments = reviewComments;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

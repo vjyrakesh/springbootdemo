@@ -1,33 +1,34 @@
 package com.rkasibha.springbootdemo.model;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
+@Entity
 public class Book {
 
-    @NotNull
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @NotNull
     private String name;
 
-    @NotNull
-    private Author author;
+//    @NotNull
+//    private Author author;
+
+    @OneToMany(mappedBy = "book")
+    private List<Review> reviews;
 
     public Book() {
 
     }
 
-    public Book(long id, String name, Author author) {
-        this.id = id;
-        this.name = name;
-        this.author = author;
-    }
-
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -39,11 +40,19 @@ public class Book {
         this.name = name;
     }
 
-    public Author getAuthor() {
-        return author;
+//    public Author getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(Author author) {
+//        this.author = author;
+//    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }

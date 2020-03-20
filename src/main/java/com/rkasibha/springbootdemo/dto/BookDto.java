@@ -1,22 +1,19 @@
 package com.rkasibha.springbootdemo.dto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 public class BookDto {
 
     @NotBlank(message="Book name is mandatory")
     private String name;
 
-    @Valid
-    private AuthorDto author;
+    private List<ReviewDto> reviews;
+
+//    @Valid
+//    private AuthorDto author;
 
     public BookDto() {}
-
-    public BookDto(String name, AuthorDto author) {
-        this.name = name;
-        this.author = author;
-    }
 
     public String getName() {
         return name;
@@ -26,11 +23,19 @@ public class BookDto {
         this.name = name;
     }
 
-    public AuthorDto getAuthor() {
-        return author;
+    public List<ReviewDto> getReviews() {
+        return reviews;
     }
 
-    public void setAuthor(AuthorDto author) {
-        this.author = author;
+    public void setReviews(List<ReviewDto> reviews) {
+        this.reviews = reviews;
     }
+
+    //    public AuthorDto getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(AuthorDto author) {
+//        this.author = author;
+//    }
 }
