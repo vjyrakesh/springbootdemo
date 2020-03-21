@@ -20,6 +20,9 @@ public class BookService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private ReviewService reviewService;
+
     @MeasureExecutionTime
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
@@ -36,7 +39,12 @@ public class BookService {
 
     public List<Review> getAllReviews(Integer bookId) {
         Book book = bookRepository.findById(bookId).get();
-        return reviewRepository.findAllReviewsByBook(book);
+        return book.getReviews();
+    }
+
+    public Review addBookReview(Integer bookId, Review review) {
+        Book book = bookRepository.findById(bookId).get();
+        return reviewService.addBookReview(book, review);
     }
 
 }

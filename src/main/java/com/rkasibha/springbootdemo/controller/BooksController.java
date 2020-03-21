@@ -64,7 +64,7 @@ public class BooksController {
     @RequestMapping(value = "/{id}/reviews", method = RequestMethod.POST)
     public ResponseEntity<ReviewDto> addBookReview(@PathVariable Integer id, @RequestBody ReviewDto reviewDto) {
         Review review = mapper.map(reviewDto, Review.class);
-        ReviewDto addedReviewDto = mapper.map(reviewService.addBookReview(id, review), ReviewDto.class);
+        ReviewDto addedReviewDto = mapper.map(bookService.addBookReview(id, review), ReviewDto.class);
         return new ResponseEntity<>(addedReviewDto, HttpStatus.CREATED);
     }
 

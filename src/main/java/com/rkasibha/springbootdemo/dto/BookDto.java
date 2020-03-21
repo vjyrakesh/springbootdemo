@@ -5,6 +5,8 @@ import java.util.List;
 
 public class BookDto {
 
+    private Integer id;
+
     @NotBlank(message="Book name is mandatory")
     private String name;
 
@@ -38,4 +40,13 @@ public class BookDto {
 //    public void setAuthor(AuthorDto author) {
 //        this.author = author;
 //    }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

@@ -46,8 +46,7 @@ public class ReviewService {
         return reviewCommentRepository.save(reviewComment);
     }
 
-    public Review addBookReview(Integer bookId, Review review) {
-        Book book = bookRepository.findById(bookId).get();
+    public Review addBookReview(Book book, Review review) {
         review.setBook(book);
         return reviewRepository.save(review);
     }
