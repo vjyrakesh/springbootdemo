@@ -1,11 +1,13 @@
 package com.rkasibha.springbootdemo.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class BookDto {
 
     private Integer id;
@@ -15,7 +17,7 @@ public class BookDto {
 
     private List<ReviewDto> reviews;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     private Set<AuthorDto> authors;
 
     public BookDto() {}

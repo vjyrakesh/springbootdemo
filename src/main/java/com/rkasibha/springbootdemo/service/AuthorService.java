@@ -39,4 +39,8 @@ public class AuthorService {
         }
         return authorDetailsDtos;
     }
+
+    public List<Author> getAllAuthors() {
+        return authorRespository.findAll();
+    }
 }

@@ -20,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(value = "/books")
-public class BooksController {
+public class BookController {
 
     @Autowired
     private BookService bookService;
