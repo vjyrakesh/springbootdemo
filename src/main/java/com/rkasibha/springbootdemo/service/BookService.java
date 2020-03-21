@@ -2,6 +2,7 @@ package com.rkasibha.springbootdemo.service;
 
 import com.rkasibha.springbootdemo.annotation.MeasureExecutionTime;
 import com.rkasibha.springbootdemo.exception.BookNotFoundException;
+import com.rkasibha.springbootdemo.model.Author;
 import com.rkasibha.springbootdemo.model.Book;
 import com.rkasibha.springbootdemo.model.Review;
 import com.rkasibha.springbootdemo.repository.BookRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookService {
@@ -30,6 +32,9 @@ public class BookService {
     }
 
     public void addBook(Book book) {
+        Set<Author> authors = book.getAuthors();
+        for(Author author : authors)
+            System.out.println(author.getFirstName() + " " + author.getLastName());
         bookRepository.save(book);
     }
 

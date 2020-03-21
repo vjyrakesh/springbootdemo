@@ -1,8 +1,11 @@
 package com.rkasibha.springbootdemo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Book {
@@ -14,8 +17,9 @@ public class Book {
     @NotNull
     private String name;
 
-//    @NotNull
-//    private Author author;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonBackReference
+    private Set<Author> authors;
 
     @OneToMany(mappedBy = "book")
     private List<Review> reviews;
@@ -40,19 +44,19 @@ public class Book {
         this.name = name;
     }
 
-//    public Author getAuthor() {
-//        return author;
-//    }
-//
-//    public void setAuthor(Author author) {
-//        this.author = author;
-//    }
-
     public List<Review> getReviews() {
         return reviews;
     }
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 }

@@ -77,26 +77,6 @@ public class BooksController {
         return new ResponseEntity<>(reviewDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/author", method = RequestMethod.GET)
-    public ResponseEntity<AuthorDto> getAuthorDetails() {
-        Address address = new Address("Bangalore", "India");
-        Author author = new Author("Rakesh", "Kasibhatla", address);
-        author.setAddress(address);
-
-        AuthorDto authorDto = mapper.map(author, AuthorDto.class);
-        authorDto.setAddress(mapper.map(address, AddressDto.class));
-        return new ResponseEntity<AuthorDto>(authorDto, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/authors", method = RequestMethod.POST)
-    public ResponseEntity<AuthorDto> addAuthor(@RequestBody AuthorDto authorDto) {
-        AuthorDto authorDto1 = new AuthorDto();
-        authorDto1.setFirstName(authorDto.getFirstName());
-        authorDto1.setLastName(authorDto.getLastName());
-        authorDto1.setAddress(authorDto.getAddress());
-        return new ResponseEntity<AuthorDto>(authorDto1, HttpStatus.CREATED);
-    }
-
     @RequestMapping(value="/reviews", method = RequestMethod.POST)
     public ResponseEntity<ReviewDto> addReview(@RequestBody ReviewDto reviewDto) {
         Review review = convertReviewDtoToReview(reviewDto);
