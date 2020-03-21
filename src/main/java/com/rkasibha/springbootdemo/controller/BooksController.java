@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping(value = "api/v1/books")
+@RequestMapping(value = "/books")
 public class BooksController {
 
     @Autowired

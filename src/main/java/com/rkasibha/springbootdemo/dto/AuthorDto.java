@@ -1,6 +1,6 @@
 package com.rkasibha.springbootdemo.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.rkasibha.springbootdemo.annotation.CustomNameConstraint;
 
 import javax.validation.constraints.NotBlank;
@@ -17,7 +17,7 @@ public class AuthorDto {
     private String lastName;
 //    private AddressDto address;
 
-    @JsonIgnore
+    @JsonBackReference
     private Set<BookDto> books;
 
     public AuthorDto() {}
@@ -53,4 +53,13 @@ public class AuthorDto {
     public void setBooks(Set<BookDto> books) {
         this.books = books;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 }

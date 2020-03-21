@@ -1,5 +1,7 @@
 package com.rkasibha.springbootdemo.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,7 @@ public class BookDto {
 
     private List<ReviewDto> reviews;
 
+    @JsonManagedReference
     private Set<AuthorDto> authors;
 
     public BookDto() {}
