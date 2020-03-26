@@ -35,7 +35,8 @@ public class BookController {
     private ReviewService reviewService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<BookDto>> getBooks() {
+    public ResponseEntity<List<BookDto>> getBooks(@RequestHeader("WEBEX_TRACKINGID") String trackingId) {
+        System.out.println("Tracking id: " + trackingId);
         List<Book> books = bookService.getAllBooks();
         List<BookDto> bookDtos = new ArrayList<>();
         for(Book book : books)
