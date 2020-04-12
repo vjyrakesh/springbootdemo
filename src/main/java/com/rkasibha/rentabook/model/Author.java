@@ -18,7 +18,12 @@ public class Author {
 
     public Author(){}
 
-//    public Address getAddress() {
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    //    public Address getAddress() {
 //        return address;
 //    }
 //

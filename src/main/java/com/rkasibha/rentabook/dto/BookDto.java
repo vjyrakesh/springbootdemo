@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,13 +17,17 @@ public class BookDto {
     @NotBlank(message="Book name is mandatory")
     private String name;
 
-    private List<ReviewDto> reviews;
+    private List<ReviewDto> reviews = new ArrayList<>();
 
 //    @JsonManagedReference
-    private Set<AuthorDto> authors;
+//    private Set<AuthorDto> authors = new HashSet<>();
+
+    private Set<BookAuthorInfoDto> authorInfo = new HashSet<>();
 
 //    @JsonIgnore
-    private Set<BookPublisherDto> publishers;
+//    private Set<BookPublisherDto> publishers;
+
+    private Set<PublisherInfoDto> publisherInfo = new HashSet<>();
 
     public BookDto() {}
 
@@ -49,19 +55,35 @@ public class BookDto {
         this.id = id;
     }
 
-    public Set<AuthorDto> getAuthors() {
-        return authors;
+//    public Set<AuthorDto> getAuthors() {
+//        return authors;
+//    }
+
+//    public void setAuthors(Set<AuthorDto> authors) {
+//        this.authors = authors;
+//    }
+
+//    public Set<BookPublisherDto> getPublishers() {
+//        return publishers;
+//    }
+
+//    public void setPublishers(Set<BookPublisherDto> publishers) {
+//        this.publishers = publishers;
+//    }
+
+    public Set<PublisherInfoDto> getPublisherInfo() {
+        return publisherInfo;
     }
 
-    public void setAuthors(Set<AuthorDto> authors) {
-        this.authors = authors;
+    public void setPublisherInfo(Set<PublisherInfoDto> publisherInfo) {
+        this.publisherInfo = publisherInfo;
     }
 
-    public Set<BookPublisherDto> getPublishers() {
-        return publishers;
+    public Set<BookAuthorInfoDto> getAuthorInfo() {
+        return authorInfo;
     }
 
-    public void setPublishers(Set<BookPublisherDto> publishers) {
-        this.publishers = publishers;
+    public void setAuthorInfo(Set<BookAuthorInfoDto> authorInfo) {
+        this.authorInfo = authorInfo;
     }
 }

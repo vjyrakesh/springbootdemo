@@ -1,12 +1,8 @@
 package com.rkasibha.rentabook.controller;
 
-import com.rkasibha.rentabook.dto.BookDto;
-import com.rkasibha.rentabook.dto.ReviewCommentDto;
-import com.rkasibha.rentabook.dto.ReviewDto;
+import com.rkasibha.rentabook.dto.*;
 import com.rkasibha.rentabook.exception.BookNotFoundException;
-import com.rkasibha.rentabook.model.Book;
-import com.rkasibha.rentabook.model.Review;
-import com.rkasibha.rentabook.model.ReviewComment;
+import com.rkasibha.rentabook.model.*;
 import com.rkasibha.rentabook.repository.ReviewRepository;
 import com.rkasibha.rentabook.service.BookService;
 import com.rkasibha.rentabook.service.ReviewService;
@@ -63,7 +59,7 @@ public class BookController {
     public ResponseEntity<BookDto> getOneBook(@PathVariable Integer id) {
         try {
             Book book = bookService.getOneBook(id);
-            BookDto bookDto = mapper.map(book, BookDto.class);
+            BookDto bookDto = convertBookToBookDto(book);
             return new ResponseEntity<BookDto>(bookDto, HttpStatus.OK);
         } catch (BookNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Book with id:%d not found", id), ex);
@@ -150,6 +146,16 @@ public class BookController {
         BookDto bookDto = new BookDto();
         bookDto.setId(book.getId());
         bookDto.setName(book.getName());
+        for(Author author : book.getAuthors()) {
+            System.out.println("****** Author: " + author.getFirstName() + ", " + author.getLastName());
+            bookDto.getAuthorInfo().add(new BookAuthorInfoDto(author.getFirstName(), author.getLastName()));
+        }
+        for(Review review : book.getReviews()) {
+            bookDto.getReviews().add(mapper.map(review, ReviewDto.class));
+        }
+        for(BookPublisher bookPublisher : book.getPublishers()) {
+            bookDto.getPublisherInfo().add(new PublisherInfoDto(bookPublisher.getPublisher().getName(), bookPublisher.getFormat()));
+        }
         return bookDto;
     }
 

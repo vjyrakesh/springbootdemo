@@ -1,9 +1,9 @@
 package com.rkasibha.rentabook.service;
 
 import com.rkasibha.rentabook.annotation.MeasureExecutionTime;
-import com.rkasibha.rentabook.dto.AuthorDto;
+import com.rkasibha.rentabook.dto.BookAuthorInfoDto;
 import com.rkasibha.rentabook.dto.BookDto;
-import com.rkasibha.rentabook.dto.BookPublisherDto;
+import com.rkasibha.rentabook.dto.PublisherInfoDto;
 import com.rkasibha.rentabook.exception.BookNotFoundException;
 import com.rkasibha.rentabook.model.*;
 import com.rkasibha.rentabook.repository.BookPublisherRepository;
@@ -73,16 +73,17 @@ public class BookService {
 
     @Transactional
     public Book addBook(BookDto bookDto) {
-        Set<BookPublisherDto> publishers = bookDto.getPublishers();
         Book book = new Book();
         book.setName(bookDto.getName());
-        for(AuthorDto authorDto: bookDto.getAuthors()) {
-            book.getAuthors().add(mapper.map(authorDto, Author.class));
+        for(BookAuthorInfoDto authorDto: bookDto.getAuthorInfo()) {
+            book.getAuthors().add(new Author(authorDto.getFirstName(), authorDto.getLastName()));
         }
         Book addedBook = bookRepository.save(book);
         System.out.println(addedBook.getName() + "::" + addedBook.getId());
-        for(BookPublisherDto bookPublisherDto : publishers) {
-            Publisher publisher = publisherService.getPublisher(bookPublisherDto.getPublisher().getName());
+
+        Set<PublisherInfoDto> publishers = bookDto.getPublisherInfo();
+        for(PublisherInfoDto bookPublisherDto : publishers) {
+            Publisher publisher = publisherService.getPublisher(bookPublisherDto.getName());
             System.out.println(publisher.getName() + "::" + publisher.getId());
             BookPublisher bookPublisher = new BookPublisher(addedBook, publisher, bookPublisherDto.getFormat());
             bookPublisherRepository.save(bookPublisher);
