@@ -11,6 +11,7 @@ import com.rkasibha.rentabook.repository.ReviewRepository;
 import com.rkasibha.rentabook.service.BookService;
 import com.rkasibha.rentabook.service.ReviewService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,7 @@ public class BookController {
     public ResponseEntity<List<BookDto>> getBooks() {
         List<Book> books = bookService.getAllBooks();
         List<BookDto> bookDtos = new ArrayList<>();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         for(Book book : books)
             bookDtos.add(mapper.map(book, BookDto.class));
         return new ResponseEntity<List<BookDto>>(bookDtos, HttpStatus.OK);
@@ -52,7 +54,7 @@ public class BookController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<BookDto> addBook(@Valid @RequestBody BookDto book) {
-        bookService.addBook(convertBookDtoToEntity(book));
+        Book addedBook = bookService.addBook(book);
         return new ResponseEntity<BookDto>(book, HttpStatus.CREATED);
 
     }
@@ -142,6 +144,13 @@ public class BookController {
 
     private Review convertReviewDtoToReview(ReviewDto reviewDto) {
         return mapper.map(reviewDto, Review.class);
+    }
+
+    private BookDto convertBookToBookDto(Book book) {
+        BookDto bookDto = new BookDto();
+        bookDto.setId(book.getId());
+        bookDto.setName(book.getName());
+        return bookDto;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

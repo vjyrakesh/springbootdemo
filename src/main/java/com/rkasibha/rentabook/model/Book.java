@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,10 +21,14 @@ public class Book {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonBackReference
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
 
     @OneToMany(mappedBy = "book")
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<BookPublisher> publishers = new HashSet<>();
+
 
     public Book() {
 
@@ -59,4 +65,13 @@ public class Book {
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
+
+    public Set<BookPublisher> getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(Set<BookPublisher> publishers) {
+        this.publishers = publishers;
+    }
+
 }

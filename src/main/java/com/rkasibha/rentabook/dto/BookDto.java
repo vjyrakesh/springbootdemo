@@ -20,6 +20,9 @@ public class BookDto {
 //    @JsonManagedReference
     private Set<AuthorDto> authors;
 
+//    @JsonIgnore
+    private Set<BookPublisherDto> publishers;
+
     public BookDto() {}
 
     public String getName() {
@@ -52,5 +55,13 @@ public class BookDto {
 
     public void setAuthors(Set<AuthorDto> authors) {
         this.authors = authors;
+    }
+
+    public Set<BookPublisherDto> getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(Set<BookPublisherDto> publishers) {
+        this.publishers = publishers;
     }
 }
